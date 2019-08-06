@@ -1,4 +1,4 @@
-import socket
+from socket import socket
 import parsersyslog
 import mysql.connector
 import datetime
@@ -18,7 +18,7 @@ exe = sql.cursor()
 
 
 def listener():
-    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    sock = socket(socket.AF_INET, socket.SOCK_DGRAM)
     sock.bind(addr)
     while True:
         rec = sock.recvfrom(bufsize)
