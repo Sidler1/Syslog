@@ -17,4 +17,10 @@ class ParserFirewall:
         e = re.split("[a-z]{1,}=", self.message)
         del e[0]
         titel = t.findall(self.message)
-        return titel, e
+        header = 0
+        data = {}
+        while header < len(titel):
+            data[titel[header][:-1]] = e[header]
+            header += 1
+        # print(data)
+        return data
