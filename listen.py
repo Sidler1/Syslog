@@ -10,9 +10,10 @@ fwaddr = "192.168.5.1"
 addr = (host, port)
 
 usr = "root"
-pwd = "mysql"
-database = "syslog"
-sql = mysql.connector.connect(user=usr, password=pwd, database=database)
+pwd = "!!PASSWORT!!"
+database = "syslog_server"
+mysqlhost = "localhost"
+sql = mysql.connector.connect(host=mysqlhost, user=usr, password=pwd, database=database)
 exe = sql.cursor()
 
 
@@ -33,11 +34,9 @@ def listener():
                 data[msg[0][header][:-1]] = msg[1][header]
                 header += 1
 
-            addmsg = ("INSERT INTO log"
-                      "(id, sn, time, fw, pri, msg, src, dst, proto) "
-                      'VALUES ("{}", "{}", {}, "{}", "{}", {}, "{}", "{}", "{}")'.format(data['id'], data['sn'], data['time'],
-                                                                           data['fw'], data['pri'], data['msg'],
-                                                                           data['src'], data['dst'], data['proto']))
+            addmsg = ("INSERT INTO syslog_fw"
+                      "(ip, prio, msg, from_ip, to_ip) "
+                      'VALUES ("{}", {}, {}, "{}", "{}")'.format(data['id'], data['pri'], data['msg'], data['src'], data['dst']))
             exe.execute(addmsg)
             sql.commit()
 
