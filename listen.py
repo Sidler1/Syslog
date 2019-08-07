@@ -1,4 +1,4 @@
-from socket import socket
+import socket
 import parsersyslog
 import mysql.connector
 import datetime
@@ -9,16 +9,16 @@ bufsize = 32 * 1024  # 32 kByte
 fwaddr = "192.168.5.1"
 addr = (host, port)
 
-usr = "root"
-pwd = "!!PASSWORD!!"
+usr = "felix"
+pwd = "mysql"
 database = "syslog_server"
-mysqlhost = "localhost"
+mysqlhost = "192.168.0.234"
 sql = mysql.connector.connect(host=mysqlhost, user=usr, password=pwd, database=database)
 exe = sql.cursor()
 
 
 def listener():
-    sock = socket(socket.AF_INET, socket.SOCK_DGRAM)
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     sock.bind(addr)
     while True:
         rec = sock.recvfrom(bufsize)
