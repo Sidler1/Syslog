@@ -14,7 +14,8 @@ datafw =[
 'Jan  3 13:45:43 192.168.5.1 id=firewall sn=000SERIAL time="2007-01-03 14:48:14" fw=1.1.1.1 pri=6 c=1024 m=537 msg="Connection Closed" n=568000 src=219.89.19.223:1026:WAN dst=1.1.1.1:0:WAN proto=udp/0',
 'Jan  3 13:45:44 192.168.5.1 id=firewall sn=000SERIAL time="2007-01-03 14:48:15" fw=1.1.1.1 pri=6 c=262144 m=98 msg="Connection Opened" n=23423 src=1.1.1.1:500:WAN dst=2.2.2.2:500:WAN proto=udp/500'
 ]
-datasrv = '<14>Aug  7 13:36:16 172.21.0.29 04911 ntp:  The NTP Server 172.21.0.11 is unreachable.'
+data_sw = '<14>Aug  7 13:36:16 172.21.0.29 04911 ntp:  The NTP Server 172.21.0.11 is unreachable.'
+data_srv =''
 
 def main():
     server = "127.0.0.1"
@@ -24,7 +25,6 @@ def main():
     for i in range(9000):
         udpsend.sendto(random.choice(datafw), addr)
         time.sleep(0.1)
-        #udpsend.sendto(random.choice(datasrv), addr)
     udpsend.close()
 
 

@@ -22,6 +22,8 @@ def listener():
     while True:
         rec = sock.recvfrom(bufsize)
         msg = rec[0]
+        msg = str(msg)
+        msg = msg.replace('"','')
         ipfrom = rec[1][0]
         if ipfrom == fwaddr or ipfrom.split(".")[3] == fwaddr.split(".")[3]:
             fwmsg = parsersyslog.ParserFirewall(msg)
@@ -43,13 +45,12 @@ def listener():
                 print(addmsg)
                 exe.execute(addmsg)
                 sql.commit()
-
         else:
             sysmsg = parsersyslog.ParserSwitch(msg)
             data = sysmsg.pars()
             addmsg = ("INSERT INTO syslog_switch"
                       "(from_ip, msg, prio) "
-                      'VALUES ("{}", "{}", "{}")'.format(ipfrom, str(data['msg']).strip('"'), data['pri']))
+                      'VALUES ("{}", "{}", "{}")'.format(ipfrom, data['msg'].replace('"',""), data['pri']))
             print(addmsg)
             exe.execute(addmsg)
             sql.commit()
