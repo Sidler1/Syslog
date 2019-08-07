@@ -9,13 +9,12 @@ bufsize = 32 * 1024  # 32 kByte
 fwaddr = "192.168.5.1"
 addr = (host, port)
 
-usr = "felix"
+usr = "root"
 pwd = "mysql"
 database = "syslog_server"
-mysqlhost = "192.168.0.234"
+mysqlhost = "127.0.0.1"
 sql = mysql.connector.connect(host=mysqlhost, user=usr, password=pwd, database=database)
 exe = sql.cursor()
-
 
 def listener():
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -32,8 +31,28 @@ def listener():
                       'VALUES ("{}", {}, {}, "{}", "{}")'.format(data['id'], data['pri'], data['msg'], data['src'], data['dst']))
             exe.execute(addmsg)
             sql.commit()
+        elif ipfrom == "172.20.4.78":
+            linuxmsg = parsersyslog.ParserLinux(str(msg))
+            data = linuxmsg.pars()
+            if data == None:
+                pass
+            else:
+                addmsg = ("INSERT INTO syslog_srv"
+                "(client_ip, msg, prio, service) "
+                'VALUES ("{}", "{}", "{}", "{}")'.format(ipfrom, data['msg'], data['pri'], data['trigger']))
+                print(addmsg)
+                exe.execute(addmsg)
+                sql.commit()
+
         else:
-            print(msg)
+            sysmsg = parsersyslog.ParserSwitch(msg)
+            data = sysmsg.pars()
+            addmsg = ("INSERT INTO syslog_switch"
+                      "(from_ip, msg, prio) "
+                      'VALUES ("{}", "{}", "{}")'.format(ipfrom, str(data['msg']).strip('"'), data['pri']))
+            print(addmsg)
+            exe.execute(addmsg)
+            sql.commit()
     sock.close()
 
 
