@@ -1,4 +1,6 @@
 import socket
+import time
+import random
 
 data =[
 'Jan  3 13:45:36 192.168.5.1 id=firewall sn=000SERIAL time="2007-01-03 14:48:06" fw=1.1.1.1 pri=6 c=262144 m=98 msg="Connection Opened" n=23419 src=2.2.2.2:36701:WAN dst=1.1.1.1:50000:WAN proto=tcp/50000',
@@ -17,8 +19,8 @@ def main():
     port = 514
     addr = (server, port)
     udpsend = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    for logs in data:
-        udpsend.sendto(logs, addr)
+    for i in range(500):
+        udpsend.sendto(random.choice(data), addr)
     udpsend.close()
 
 
