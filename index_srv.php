@@ -1,4 +1,4 @@
-<html>
+<html lang="de-DE">
 <style>
 table {
   border-collapse: collapse;
@@ -30,12 +30,11 @@ echo "<table><tr><th>Zeit</th><th>System</th><th>Service</th><th>Nachricht</th><
 if ($result->num_rows > 0) {
     // output data of each row
     while($row = $result->fetch_assoc()) {
-        echo "</td><td>" . $row["tstamp"] . "</td><td>" . $row["client_ip"] . "</td><td>".$row["service"]."</td><td>".$row["msg"]."</tr>";
+        echo "<tr><td>" . $row["tstamp"] . "</td><td>" . $row["client_ip"] . "</td><td>".$row["service"]."</td><td>".$row["msg"]."</td></tr>";
     }
     echo "</table>";
 } else {
     echo "</table>";
-    echo "0 results";
 }
 $conn->close();
 ?>
