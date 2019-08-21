@@ -1,7 +1,10 @@
+import datetime
 import socket
-import server_check
-import parsersyslog
+
 import mysql.connector
+
+import parsersyslog
+import server_check
 
 host = ""  # Localhost
 port = 514  # Standart Syslog Port
@@ -23,6 +26,9 @@ def listener():
         rec = sock.recvfrom(bufsize)
         msg = rec[0]
         msg = str(msg)
+        f = open("{}.log".format(datetime.date), "a+")
+        f.write(msg)
+        f.close()
         msg = msg.replace('"', '')
         ipfrom = rec[1][0]
         if ipfrom == fwaddr or ipfrom.split(".")[3] == fwaddr.split(".")[3] or server_check.isfirewall(ipfrom):
